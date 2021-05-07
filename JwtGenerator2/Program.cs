@@ -55,10 +55,20 @@ namespace JwtGenerator2
                "Audience",
                new ClaimsIdentity(claims),
                DateTime.Now,
-               DateTime.Now.AddHours(1),
+               DateTime.Now.AddMinutes(2),
                DateTime.Now,
-               signingCredentials)
-               ;
+               signingCredentials);
+
+            var secToken = new JwtSecurityToken(
+           signingCredentials: signingCredentials,
+           issuer: "Sample",
+           audience: "Sample",
+           claims: new[]
+           {
+                new Claim(JwtRegisteredClaimNames.Sub, "meziantou")
+           },
+           expires: DateTime.UtcNow.AddSeconds(1)
+           );
 
 
             string tokenString = handler.WriteToken(jwtSecurityToken);
@@ -81,9 +91,11 @@ namespace JwtGenerator2
             {
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(sec)),
                 //TokenDecryptionKeys =new List<SymmetricSecurityKey>() { securityKey1 },
-                ValidateLifetime = false, // Because there is no expiration in the generated token
+                ValidateLifetime = true, // Because there is no expiration in the generated token
                 ValidateAudience = false, // Because there is no audiance in the generated token
                 ValidateIssuer = false,
+                RequireExpirationTime=true,
+                ClockSkew = TimeSpan.Zero
             };
 
             try
