@@ -31,6 +31,7 @@ namespace JwtGenerator2
             List<Claim> claims = new List<Claim>()
                 {
                     new Claim("sub", "test"),
+                    new Claim("TokenGuid", Guid.NewGuid().ToString()),
                 };
 
             var ep = new EncryptingCredentials(
@@ -55,7 +56,7 @@ namespace JwtGenerator2
                "Audience",
                new ClaimsIdentity(claims),
                DateTime.Now,
-               DateTime.Now.AddMinutes(2),
+               DateTime.Now.AddHours(2),
                DateTime.Now,
                signingCredentials);
 
@@ -82,6 +83,7 @@ namespace JwtGenerator2
 
         private static void ValidateToken(string _token)
         {
+            _token = Res1.token1;
             const string sec = "ProEMLh5e_qnzdNUQrqdHPgp";
             const string sec1 = "ProEMLh5e_qnzdNU";
             var securityKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(sec));
