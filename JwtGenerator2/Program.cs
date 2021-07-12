@@ -30,8 +30,14 @@ namespace JwtGenerator2
 
             List<Claim> claims = new List<Claim>()
                 {
-                    new Claim("sub", "test"),
                     new Claim("TokenGuid", Guid.NewGuid().ToString()),
+                    new Claim("UserType", "1"),
+                    new Claim("UserIdentityNo", "2388773026"),
+                    new Claim("UserBirthDate", "28-09-1976"),
+                    new Claim("UserMobileNo", "0593353099"),
+                    new Claim("UserEmail", "sherif_hfm@yahoo.com"),
+                    //new Claim("EngOfficeNo", "5110005456"),
+                    new Claim("ServiceId", "02001"),
                 };
 
             var ep = new EncryptingCredentials(
@@ -52,18 +58,18 @@ namespace JwtGenerator2
             //    ep);
 
             var jwtSecurityToken = handler.CreateJwtSecurityToken(
-               "issuer",
-               "Audience",
+               "RmIssuer",
+               "RmAudience",
                new ClaimsIdentity(claims),
                DateTime.Now,
-               DateTime.Now.AddHours(2),
+               DateTime.Now.AddDays(30),
                DateTime.Now,
                signingCredentials);
 
             var secToken = new JwtSecurityToken(
            signingCredentials: signingCredentials,
-           issuer: "Sample",
-           audience: "Sample",
+           issuer: "RmIssuer",
+           audience: "RmAudience",
            claims: new[]
            {
                 new Claim(JwtRegisteredClaimNames.Sub, "meziantou")
